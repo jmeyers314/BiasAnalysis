@@ -694,6 +694,10 @@ def run_batch(num_trials,
             x0_b_r = x0_b + np.random.uniform(-pixel_scale/2,pixel_scale/2)
             y0_a_r = y0_a + np.random.uniform(-pixel_scale/2,pixel_scale/2)
             y0_b_r = y0_b + np.random.uniform(-pixel_scale/2,pixel_scale/2)
+            truth['x0_a'] = x0_a_r
+            truth['y0_a'] = y0_a_r
+            truth['x0_b'] = x0_b_r
+            truth['y0_b'] = y0_b_r
         else:
             x0_a_r = x0_a
             x0_b_r = x0_b
@@ -755,6 +759,11 @@ def run_batch(num_trials,
     results_true = pd.DataFrame(results_true)
     results_sim = pd.DataFrame(results_sim)
     x_y_coord = pd.DataFrame(x_y_coord)
+    
+    truth['x0_a'] = x0_a
+    truth['y0_a'] = y0_a
+    truth['x0_b'] = x0_b
+    truth['y0_b'] = y0_b
     
     return results_deblend, results_true, results_sim, truth, x_y_coord, images
     

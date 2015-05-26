@@ -110,7 +110,7 @@ def run_bias_over_separation(directory,
     right_diag = r_diag
     
     # Number of trials to use for each separation
-    num_trials = 20
+    num_trials = 1000
     num_trial_arr = num_trials*np.ones(len(separation),dtype=np.int64)
     # Certain separations may present numerical instability, in which
     # it may be necessary to perform less trials.
@@ -210,6 +210,111 @@ if __name__ == '__main__':
     l_diag = False
     r_diag = False
     # Store information in current working directory
+    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
+    run_bias_over_separation(dir_str,
+                             psf,
+                             est_centroid,
+                             random_pixel,
+                             x_axis,y_axis,
+                             l_diag,r_diag)
+                             
+    psf = False
+    est_centroid = False
+    random_pixel = True
+    x_axis = True
+    y_axis = False
+    l_diag = False
+    r_diag = False
+    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
+    run_bias_over_separation(dir_str,
+                             psf,
+                             est_centroid,
+                             random_pixel,
+                             x_axis,y_axis,
+                             l_diag,r_diag)
+                             
+    psf = False
+    est_centroid = True
+    random_pixel = False
+    x_axis = True
+    y_axis = False
+    l_diag = False
+    r_diag = False
+    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
+    run_bias_over_separation(dir_str,
+                             psf,
+                             est_centroid,
+                             random_pixel,
+                             x_axis,y_axis,
+                             l_diag,r_diag)
+                             
+    psf = False
+    est_centroid = False
+    random_pixel = False
+    x_axis = True
+    y_axis = False
+    l_diag = False
+    r_diag = False
+    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
+    run_bias_over_separation(dir_str,
+                             psf,
+                             est_centroid,
+                             random_pixel,
+                             x_axis,y_axis,
+                             l_diag,r_diag)
+                             
+    psf = True
+    est_centroid = True
+    random_pixel = True
+    x_axis = True
+    y_axis = False
+    l_diag = False
+    r_diag = False
+    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
+    run_bias_over_separation(dir_str,
+                             psf,
+                             est_centroid,
+                             random_pixel,
+                             x_axis,y_axis,
+                             l_diag,r_diag)
+                             
+    psf = True
+    est_centroid = False
+    random_pixel = True
+    x_axis = True
+    y_axis = False
+    l_diag = False
+    r_diag = False
+    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
+    run_bias_over_separation(dir_str,
+                             psf,
+                             est_centroid,
+                             random_pixel,
+                             x_axis,y_axis,
+                             l_diag,r_diag)
+                             
+    psf = True
+    est_centroid = True
+    random_pixel = False
+    x_axis = True
+    y_axis = False
+    l_diag = False
+    r_diag = False
+    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
+    run_bias_over_separation(dir_str,
+                             psf,
+                             est_centroid,
+                             random_pixel,
+                             x_axis,y_axis,
+                             l_diag,r_diag)
+                             
+    psf = True
+    est_centroid = False
+    random_pixel = False
+    x_axis = True
+    y_axis = False
+    l_diag = False
+    r_diag = False
     dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
     run_bias_over_separation(dir_str,
                              psf,
