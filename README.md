@@ -5,7 +5,7 @@ Repository contains set of functions to run the deblender, simultaneous fitter, 
 galsim objects using the python library, lmfit, in order to assess and compare bias of
 different methods.
 
-# InitializeAnalysis.py:
+# InitializeAnalysis.py
 This program runs through different separations
 for two overlapping objects, runs a number of trials
 in which two overlapping objects are simultaneously
