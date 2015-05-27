@@ -17,6 +17,7 @@ import matplotlib.gridspec as gridspec
 import os
 import triangle
 import seaborn as sb
+import csv
 
 # Function Definitions --------------------------------------------------------
 
@@ -170,7 +171,7 @@ def residual_func_simple(param, data_image, sky_level, x_len, y_len, pixel_scale
     
     param -- lmfit parameters 
     data_image -- target galsim image (image.array contains array of pixels)
-    sky_level -- 
+    sky_level -- mean count of electrons from sky for full-stack image
     x_len -- horizontal dimension of images
     y_len -- vertical dimension of images
     pixel_scale -- scale of images in arcsec/pixel
@@ -337,10 +338,12 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
                      truth,
                      func, seed_1, seed_2, seed_3,
                      pixel_scale, x_len, y_len,
-                     add_noise_flag, texp, sbar,
+                     add_noise_flag, sky_level,
                      psf_flag, beta, fwhm_psf,
                      method,
                      factor_init,
+                     path,
+                     run,
                      plot=False):
                          
     """ Function that deblends target image and fits to child objects
@@ -369,13 +372,15 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
     x_len -- horizontal dimension of images
     y_len -- vertical dimension of images
     add_noise_flag -- boolean indicating noisy images
-    texp -- time of exposure for full-stack images
-    sbar -- mean counts per second of sky photons
+    sky_level -- mean count of electrons from sky for full-stack image
     psf_flag -- boolean indicating whether profiles are psf convolved
     beta -- parameter for Moffat profile
     fwhm_psf -- FWHM of PSF
     method -- method in which to generate objects
-    factor_init -- scalar to multiply initial guess
+    path -- directory in which to store lmfit report
+    run -- current run number
+    factor_init -- scalar to multiply initial guesspath
+    
     plot -- boolean indicating whether to show plots actively (Default False)
 
     Returns:
@@ -387,18 +392,20 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
     """
              
     # Rename parameters for use in previously defined functions
-    sky_level = texp*sbar
     sersic_func = func
+
+    # Failures of fit
+    failures = {'deblended_a':[],'deblended_b':[],'unblended_a':[],'unblended_b':[]}
 
     # Create the targets objects and sum them
     image_a = create_galaxy(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,galtype_gal=func,sersic_index=n_a,
                             x_len=x_len,y_len=y_len,scale=pixel_scale,
-                            psf_flag=psf_flag, beta=beta, size_psf=fwhm_psf,
+                            psf_flag=psf_flag,beta=beta,size_psf=fwhm_psf,
                             method=method, seed=seed_1)
 
     image_b = create_galaxy(flux_b,hlr_b,e1_b,e2_b,x0_b,y0_b,galtype_gal=func,sersic_index=n_b,
                             x_len=x_len,y_len=y_len,scale=pixel_scale,
-                            psf_flag=psf_flag, beta=beta, size_psf=fwhm_psf,
+                            psf_flag=psf_flag,beta=beta,size_psf=fwhm_psf,
                             method=method, seed=seed_2)
 
 
@@ -451,8 +458,20 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
     result_a = lmfit.minimize(residual_1_obj, parameters_a, args=(children[0], sky_level, x_len, y_len, pixel_scale, sersic_func, n_a,
                                                                   psf_flag, beta, fwhm_psf))
 
+    with open(path + '/lmfit_result_deblended_object_a.txt','a+') as a:
+        a.write('Trial ' + str(run) + '\n\n')
+        a.write(lmfit.fit_report(result_a))
+    if not result_a.success:
+        failures['deblended_a'].append(i)
+
     result_b = lmfit.minimize(residual_1_obj, parameters_b, args=(children[1], sky_level, x_len, y_len, pixel_scale, sersic_func, n_a,
                                                                   psf_flag, beta, fwhm_psf))
+
+    with open(path + '/lmfit_result_deblended_object_b.txt','a+') as b:
+        b.write('Trial ' + str(run) + '\n\n')
+        b.write(lmfit.fit_report(result_b))
+    if not result_b.success:
+        failures['deblended_b'].append(i)
 
     # Plot the data if necessary
     if plot != False:
@@ -528,8 +547,20 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
     result_a_true = lmfit.minimize(residual_1_obj, parameters_a, args=(image_a_t.array, sky_level, x_len, y_len, pixel_scale, sersic_func, n_a,
                                                                        psf_flag, beta, fwhm_psf))
 
+    with open(path + '/lmfit_result_unblended_object_a.txt','a+') as c:
+        c.write('Trial ' + str(run) + '\n\n')
+        c.write(lmfit.fit_report(result_a_true))
+    if not result_a_true.success:
+        failures['unblended_a'].append(i)
+
     result_b_true = lmfit.minimize(residual_1_obj, parameters_b, args=(image_b_t.array, sky_level, x_len, y_len, pixel_scale, sersic_func, n_b,
                                                                        psf_flag, beta, fwhm_psf))
+
+    with open(path + '/lmfit_result_unblended_object_b.txt','a+') as d:
+        d.write('Trial ' + str(run) + '\n\n')
+        d.write(lmfit.fit_report(result_b_true))
+    if not result_b_true.success:
+        failures['unblended_b'].append(i)
                                                                        
     # Store the results
     results_true = pd.Series(np.array([result_a_true.params['flux'].value,
@@ -547,7 +578,7 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
                                        index=['flux_a','hlr_a','e1_a','e2_a','x0_a','y0_a',
                                               'flux_b','hlr_b','e1_b','e2_b','x0_b','y0_b'])
 
-    return results_deblend, results_true, children
+    return results_deblend, results_true, children, failures
 
 
 def rearrange_lmfit_2obj(result):
@@ -619,7 +650,8 @@ def run_batch(num_trials,
               obj_a,obj_b,method,
               sky_info,
               psf_info,
-              mod_val,est_centroid,randomize):
+              mod_val,est_centroid,randomize,
+              path):
                   
     """ Function that runs num_trials over the deblender,
     the simultaneous fitter, and the true fitter to return
@@ -639,6 +671,7 @@ def run_batch(num_trials,
     mod_val -- value in which to mod number of trials for output of progress to terminal
     est_centroid -- boolean for using simultaneous fitting ouput to deblender
     randomize -- boolean for randomizing x,y coordinates by 1 pixel
+    path -- directory in which to store lmfit reports
     
     Returns:
     
@@ -684,6 +717,7 @@ def run_batch(num_trials,
     factor_init = 1
     results_sim = []
     x_y_coord = []
+    failures_simult = []
     
     # Run through each trial
     for i in xrange(0,num_trials):
@@ -717,6 +751,12 @@ def run_batch(num_trials,
                                                                             x_len,y_len,pixel_scale,sersic_func,sersic_func,seed_1,seed_2,seed_3,
                                                                             add_noise_flag,sky_level,
                                                                             method,factor_init)
+        with open(path + '/simult_fit_report.txt','a+') as f:
+            f.write('Trial ' + str(i) + '\n\n')
+            f.write(lmfit.fit_report(lm_results))
+        if not lm_results.success:
+            failures_simult.append(i)
+        
         # Store the results                                                                                              
         results_sim.append(rearrange_lmfit_2obj(lm_results))
 
@@ -735,15 +775,17 @@ def run_batch(num_trials,
             
             
         # Run the deblender and fits to the true objects
-        results_deb, results_tr, children = deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a_est,y0_a_est,n_a,
-                                                             flux_b,hlr_b,e1_b,e2_b,x0_b_est,y0_b_est,n_a,
-                                                             truth,
-                                                             sersic_func, seed_4, seed_5, seed_6,
-                                                             pixel_scale, x_len, y_len, 
-                                                             add_noise_flag, texp, sbar, 
-                                                             psf_flag, beta, fwhm_psf,
-                                                             method,
-                                                             factor_init)
+        results_deb, results_tr, children, failures_dbl_tru = deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a_est,y0_a_est,n_a,
+                                                                               flux_b,hlr_b,e1_b,e2_b,x0_b_est,y0_b_est,n_a,
+                                                                               truth,
+                                                                               sersic_func, seed_4, seed_5, seed_6,
+                                                                               pixel_scale, x_len, y_len, 
+                                                                               add_noise_flag, sky_level, 
+                                                                               psf_flag, beta, fwhm_psf,
+                                                                               method,
+                                                                               factor_init,
+                                                                               path,
+                                                                               i)
                                                              
         # Store the results from the deblender and true fitter
         results_deblend.append(results_deb)
@@ -753,7 +795,7 @@ def run_batch(num_trials,
         if i%mod_val == 0:
             print i
             images.append([children,i])
-            
+    
     # Convert information to pandas DataFrames
     results_deblend = pd.DataFrame(results_deblend)
     results_true = pd.DataFrame(results_true)
@@ -765,7 +807,7 @@ def run_batch(num_trials,
     truth['x0_b'] = x0_b
     truth['y0_b'] = y0_b
     
-    return results_deblend, results_true, results_sim, truth, x_y_coord, images
+    return results_deblend, results_true, results_sim, truth, x_y_coord, images, failures_dbl_tru, failures_simult
     
 def run_over_separation(separation,
                         num_trial_arr,
@@ -868,24 +910,32 @@ def run_over_separation(separation,
                     
         """ Helper function for inserting data from runs. """
 
-        name_arr = ['Deblending', 'True', 'Simultaneous Fitting']
+        name_arr = ['Unblended', 'Simultaneously Fitted', 'Deblended']
         if identifier == 'e1,e2':
-            dict1[str(sep)] = pd.Series(np.array([data_dbl['e1_a'][index],data_true['e1_a'][index],data_simult['e1_a'][index]]),index=name_arr)
-            dict2[str(sep)] = pd.Series(np.array([data_dbl['e2_a'][index],data_true['e2_a'][index],data_simult['e2_a'][index]]),index=name_arr)
-            dict3[str(sep)] = pd.Series(np.array([data_dbl['e1_b'][index],data_true['e1_b'][index],data_simult['e1_b'][index]]),index=name_arr)
-            dict4[str(sep)] = pd.Series(np.array([data_dbl['e2_b'][index],data_true['e2_b'][index],data_simult['e2_b'][index]]),index=name_arr)
+            dict1[str(sep)] = pd.Series(np.array([data_true['e1_a'][index],data_simult['e1_a'][index],data_dbl['e1_a'][index]]),index=name_arr)
+            dict2[str(sep)] = pd.Series(np.array([data_true['e2_a'][index],data_simult['e2_a'][index],data_dbl['e2_a'][index]]),index=name_arr)
+            dict3[str(sep)] = pd.Series(np.array([data_true['e1_b'][index],data_simult['e1_b'][index],data_dbl['e1_b'][index]]),index=name_arr)
+            dict4[str(sep)] = pd.Series(np.array([data_true['e2_b'][index],data_simult['e2_b'][index],data_dbl['e2_b'][index]]),index=name_arr)
 
         elif identifier == 'flux,hlr':
-            dict1[str(sep)] = pd.Series(np.array([data_dbl['flux_a'][index],data_true['flux_a'][index],data_simult['flux_a'][index]]),index=name_arr)
-            dict2[str(sep)] = pd.Series(np.array([data_dbl['hlr_a'][index],data_true['hlr_a'][index],data_simult['hlr_a'][index]]),index=name_arr)
-            dict3[str(sep)] = pd.Series(np.array([data_dbl['flux_b'][index],data_true['flux_b'][index],data_simult['flux_b'][index]]),index=name_arr)
-            dict4[str(sep)] = pd.Series(np.array([data_dbl['hlr_b'][index],data_true['hlr_b'][index],data_simult['hlr_b'][index]]),index=name_arr)
+            dict1[str(sep)] = pd.Series(np.array([data_true['flux_a'][index],data_simult['flux_a'][index],data_dbl['flux_a'][index]]),index=name_arr)
+            dict2[str(sep)] = pd.Series(np.array([data_true['hlr_a'][index],data_simult['hlr_a'][index],data_dbl['hlr_a'][index]]),index=name_arr)
+            dict3[str(sep)] = pd.Series(np.array([data_true['flux_b'][index],data_simult['flux_b'][index],data_dbl['flux_b'][index]]),index=name_arr)
+            dict4[str(sep)] = pd.Series(np.array([data_true['hlr_b'][index],data_simult['hlr_b'][index],data_dbl['hlr_b'][index]]),index=name_arr)
+            #dict1[str(sep)] = pd.Series(np.array([data_dbl['flux_a'][index],data_true['flux_a'][index],data_simult['flux_a'][index]]),index=name_arr)
+            #dict2[str(sep)] = pd.Series(np.array([data_dbl['hlr_a'][index],data_true['hlr_a'][index],data_simult['hlr_a'][index]]),index=name_arr)
+            #dict3[str(sep)] = pd.Series(np.array([data_dbl['flux_b'][index],data_true['flux_b'][index],data_simult['flux_b'][index]]),index=name_arr)
+            #dict4[str(sep)] = pd.Series(np.array([data_dbl['hlr_b'][index],data_true['hlr_b'][index],data_simult['hlr_b'][index]]),index=name_arr)
             
         elif identifier == 'x0,y0':
-            dict1[str(sep)] = pd.Series(np.array([data_dbl['x0_a'][index],data_true['x0_a'][index],data_simult['x0_a'][index]]),index=name_arr)
-            dict2[str(sep)] = pd.Series(np.array([data_dbl['y0_a'][index],data_true['y0_a'][index],data_simult['y0_a'][index]]),index=name_arr)
-            dict3[str(sep)] = pd.Series(np.array([data_dbl['x0_b'][index],data_true['x0_b'][index],data_simult['x0_b'][index]]),index=name_arr)
-            dict4[str(sep)] = pd.Series(np.array([data_dbl['y0_b'][index],data_true['y0_b'][index],data_simult['y0_b'][index]]),index=name_arr)
+            #dict1[str(sep)] = pd.Series(np.array([data_dbl['x0_a'][index],data_true['x0_a'][index],data_simult['x0_a'][index]]),index=name_arr)
+            #dict2[str(sep)] = pd.Series(np.array([data_dbl['y0_a'][index],data_true['y0_a'][index],data_simult['y0_a'][index]]),index=name_arr)
+            #dict3[str(sep)] = pd.Series(np.array([data_dbl['x0_b'][index],data_true['x0_b'][index],data_simult['x0_b'][index]]),index=name_arr)
+            #dict4[str(sep)] = pd.Series(np.array([data_dbl['y0_b'][index],data_true['y0_b'][index],data_simult['y0_b'][index]]),index=name_arr)
+            dict1[str(sep)] = pd.Series(np.array([data_true['x0_a'][index],data_simult['x0_a'][index],data_dbl['x0_a'][index]]),index=name_arr)
+            dict2[str(sep)] = pd.Series(np.array([data_true['y0_a'][index],data_simult['y0_a'][index],data_dbl['y0_a'][index]]),index=name_arr)
+            dict3[str(sep)] = pd.Series(np.array([data_true['x0_b'][index],data_simult['x0_b'][index],data_dbl['x0_b'][index]]),index=name_arr)
+            dict4[str(sep)] = pd.Series(np.array([data_true['y0_b'][index],data_simult['y0_b'][index],data_dbl['y0_b'][index]]),index=name_arr)
                    
     def create_dict():
         """ Helper function for creating four dictionaries. """
@@ -928,17 +978,23 @@ def run_over_separation(separation,
             obj_a[5] = np.sin(np.pi/4)*sep/2
             obj_b[4] = np.cos(np.pi/4)*sep/2
             obj_b[5] = -np.sin(np.pi/4)*sep/2
+
+        # Create sub directory to save data from this separation            
+        sub_sub_dir = '/sep:' + str(sep) + ';' + 'num_trials:' + str(num_trials)
+        path = directory + sub_sub_dir
+        os.mkdir(path)
         
         # Run the simultaneous fitter and the deblender and output the results
-        results_deblend, results_true, results_sim, truth, x_y_coord, dbl_im = run_batch(num_trials,
-                                                                                         func,
-                                                                                         seed_arr[0],seed_arr[1],seed_arr[2],
-                                                                                         seed_arr[3],seed_arr[4],seed_arr[5],
-                                                                                         image_params,
-                                                                                         obj_a,obj_b,method,
-                                                                                         sky_info,
-                                                                                         psf_info,
-                                                                                         mod_val,est_centroid,randomize)
+        results_deblend, results_true, results_sim, truth, x_y_coord, dbl_im, fail_dbl_tru, fail_simult = run_batch(num_trials,
+                                                                                                                    func,
+                                                                                                                    seed_arr[0],seed_arr[1],seed_arr[2],
+                                                                                                                    seed_arr[3],seed_arr[4],seed_arr[5],
+                                                                                                                    image_params,
+                                                                                                                    obj_a,obj_b,method,
+                                                                                                                    sky_info,
+                                                                                                                    psf_info,
+                                                                                                                    mod_val,est_centroid,randomize,
+                                                                                                                    path)
 
 
         # Obtain the residuals using the truth values and the x,y coordinates 
@@ -949,18 +1005,11 @@ def run_over_separation(separation,
                                                                truth,
                                                                x_y_coord,
                                                                randomize)
-                                                               
-                                                                                         
-
-        # Create sub directory to save data from this separation            
-        sub_sub_dir = '/sep:' + str(sep) + ';' + 'num_trials:' + str(num_trials)
-        path = directory + sub_sub_dir
-        os.mkdir(path)
         
         # Save raw data
         save_data(path,results_deblend,results_true,results_sim,'raw',False)
         save_data(path,resid_deblend,resid_true,resid_sim,'resid',False)
-        with open(path + '/x_y_coord','a') as f:
+        with open(path + '/x_y_coord.csv','a') as f:
             x_y_coord.to_csv(f)
         
         # Obtain relevant stats
@@ -978,6 +1027,15 @@ def run_over_separation(separation,
         # Save statistics on residual data
         save_data(path,data_dbl_resid,data_true_resid,data_simult_resid,'resid',True)
 
+        # Save failure data
+        writer = csv.writer(open(path + '/failures_dbl_true.txt','wb'))
+        for key, value in fail_dbl_tru.items():
+            writer.writerow([key,value])
+
+        with open(path + '/failures_simult_fit.txt','w+') as f:
+            for item in fail_simult:
+                f.write("%s\n" % item)
+
         
          # Save triangle plots
         if create_tri_plots:
@@ -987,12 +1045,13 @@ def run_over_separation(separation,
                                   results_sim,data_simult_raw,
                                   truth,
                                   x_y_coord,randomize,'raw')
-                                  
+
+            alt_truth = truth.copy()                     
             create_triangle_plots(path,sep,num_trials,
                                   resid_deblend,data_dbl_resid,
                                   resid_true,data_true_resid,
                                   resid_sim,data_simult_resid,
-                                  truth,
+                                  alt_truth,
                                   x_y_coord,randomize,'resid')
                              
         # Save a random image from the set of deblended images
@@ -1062,7 +1121,7 @@ def join_info(directory,
               mod_val,use_est_centroid,randomize,
               x_sep,y_sep,
               left_diag,right_diag,
-              create_tri_plots,):
+              create_tri_plots):
                   
     """ Create a string of run information to write to Run_Information.txt.
           
@@ -1082,15 +1141,17 @@ def join_info(directory,
     mod_val -- value in which to mod number of trials for output of progress to terminal
     est_centroid -- boolean for using simultaneous fitting ouput to deblender
     randomize -- boolean for randomizing x,y coordinates by 1 pixel
-    create_tri_plots -- boolean for creating and storing triangle plots
     x_sep -- boolean for moving objects across horizontal axis (default True)
     y_sep -- boolean for moving objects across vertical axis (default False)
     right_diag -- boolean for moving objects across right diagonal (default False)
     left_diag -- boolean for moving objects across left diagonal (default False)
+    create_tri_plots -- boolean for creating and storing triangle plots
+    method -- galsim method for creating objects
 
     Returns:
     
     String of run information.
+    
     """
                 
     if x_sep and y_sep and not right_diag and not left_diag: assert False, "Choose a diagonal."                                    
@@ -1139,7 +1200,9 @@ def join_info(directory,
               'obj_b_info = ' + str(obj_b) + ' (flux,hlr,e1,e2,x0,y0)' + '\n' +
               'sky_info = ' + str(sky_info) + ' (flag,texp,sbar,sky_level)' + '\n'
               'psf_info = ' + str(psf_info) + ' (flag,beta,fwhm)' + '\n' +
-              'separation_axis = ' + direction_str)
+              'separation_axis = ' + direction_str + '\n' +
+              'create_triangle_plots = ' + str(create_tri_plots) + '\n' +
+              'method = ' + str(method) + '\n')
             
     return sub_dir
     
@@ -1256,7 +1319,7 @@ def create_triangle_plots(path,sep,num_trials,
     
     triangle.corner(sim_tri,labels=sim_tri.columns,truths=truth.values,
                     show_titles=True,title_args={'fontsize':20},extents=extents_sim)
-    plt.suptitle('Triangle Plot for Simultaneous Fitting to the Deblended Object\n for a Separation of ' + str(sep) + '\" and ' + str(num_trials) + ' Trials',fontsize=42)
+    plt.suptitle('Triangle Plot for Simultaneous Fitting to the Blended Objects\n for a Separation of ' + str(sep) + '\" and ' + str(num_trials) + ' Trials',fontsize=42)
     if identifier == 'raw':    
         plt.savefig(path + '/raw_simult_fit_triangle_plot.png')
     else:
@@ -1266,7 +1329,7 @@ def create_triangle_plots(path,sep,num_trials,
     plt.close()
 
     fig = plt.figure(figsize=(20,20))
-    plt.suptitle('Correlation Plot for Simultaneous Fitting to the Deblended Objects\n for a Separation of ' + str(sep) + '\" and ' + str(num_trials) + ' Trials',fontsize=22)
+    plt.suptitle('Correlation Plot for Simultaneous Fitting to the Blended Objects\n for a Separation of ' + str(sep) + '\" and ' + str(num_trials) + ' Trials',fontsize=22)
     ax = fig.add_subplot()
     sb.corrplot(sim_tri,cbar=True,cmap=cmap,ax=ax,sig_stars=False,diag_names=False)
     if identifier == 'raw':        
@@ -1462,7 +1525,7 @@ def create_bias_plot(path,separation,means,s_means,pixel_scale,
     
     # Create the x-limits of plots
     x_min = np.min(separation) - pixel_scale
-    x_max = np.max(separation) + 1.5*pixel_scale
+    x_max = np.max(separation) + pixel_scale
     
     # Obtain the max, min, and associated error bars for scaling
     max_mean, min_mean = obtain_min_max_df(df1_a,df2_a,df1_b,df2_b)
@@ -1485,13 +1548,14 @@ def create_bias_plot(path,separation,means,s_means,pixel_scale,
     ax1 = fig.add_subplot(gs[0:8,0])
     title = title_arr[0]
     plt.title('Bias vs Separation For ' + title,fontsize=fs)
+    plt.xlim([x_min,x_max])
     if not zoom:
         if identifier == 'flux,hlr':
             plt.ylim([(min_mean_flux - 2.2*min_s_mean_flux)*min_offset,(max_mean_flux + max_s_mean_flux)*max_offset])
         else:
             plt.ylim([(min_mean - 2.2*min_s_mean)*min_offset,(max_mean + max_s_mean)*max_offset])
     plt.xlabel('Separation (arcsec)',fontsize=fs)
-    plt.ylabel('Residual',fontsize=fs)    
+    plt.ylabel('Residual (Fit - True)',fontsize=fs)    
     
     f_df1_a = format_df(df1_a,x_min,x_max,df1_a.index)
     f_s_df1_a = format_df(s_df1_a,x_min,x_max,s_df1_a.index)
@@ -1501,13 +1565,14 @@ def create_bias_plot(path,separation,means,s_means,pixel_scale,
     ax2 = fig.add_subplot(gs[11:19,0])
     title = title_arr[2]
     plt.title('Bias vs Separation For ' + title,fontsize=fs)
+    plt.xlim([x_min,x_max])
     if not zoom:
         if identifier == 'flux,hlr':
             plt.ylim([(min_mean_flux - 2.2*min_s_mean_flux)*min_offset,(max_mean_flux + max_s_mean_flux)*max_offset])
         else:
             plt.ylim([(min_mean - 2.2*min_s_mean)*min_offset,(max_mean + max_s_mean)*max_offset])
     plt.xlabel('Separation (arcsec)',fontsize=fs)
-    plt.ylabel('Residual',fontsize=fs)
+    plt.ylabel('Residual (Fit - True)',fontsize=fs)
     f_df1_b = format_df(df1_b,x_min,x_max,df1_b.index)
     f_s_df1_b = format_df(s_df1_b,x_min,x_max,s_df1_b.index)
 
@@ -1516,13 +1581,14 @@ def create_bias_plot(path,separation,means,s_means,pixel_scale,
     ax3 = fig.add_subplot(gs[0:8,1])
     title = title_arr[1]
     plt.title('Bias vs Separation For ' + title,fontsize=fs)
+    plt.xlim([x_min,x_max])
     if not zoom:
         if identifier == 'flux,hlr':
             plt.ylim([(min_mean_hlr - 2.2*min_s_mean_hlr)*min_offset,(max_mean_hlr + max_s_mean_hlr)*max_offset])
         else:
             plt.ylim([(min_mean - 2.2*min_s_mean)*min_offset,(max_mean + max_s_mean)*max_offset])
     plt.xlabel('Separation (arcsec)',fontsize=fs)
-    plt.ylabel('Residual',fontsize=fs)
+    plt.ylabel('Residual (Fit - True)',fontsize=fs)
     f_df2_a = format_df(df2_a,x_min,x_max,df2_a.index)
     f_s_df2_a = format_df(s_df2_a,x_min,x_max,s_df2_a.index)
     
@@ -1531,13 +1597,14 @@ def create_bias_plot(path,separation,means,s_means,pixel_scale,
     ax4 = fig.add_subplot(gs[11:19,1])
     title = title_arr[3]
     plt.title('Bias vs Separation For ' + title,fontsize=fs)
+    plt.xlim([x_min,x_max])
     if not zoom:
         if identifier == 'flux,hlr':
             plt.ylim([(min_mean_hlr - 2.2*min_s_mean_hlr)*min_offset,(max_mean_hlr + max_s_mean_hlr)*max_offset])
         else:
             plt.ylim([(min_mean - 2.2*min_s_mean)*min_offset,(max_mean + max_s_mean)*max_offset])
     plt.xlabel('Separation (arcsec)',fontsize=fs)
-    plt.ylabel('Residual',fontsize=fs)
+    plt.ylabel('Residual (Fit - True)',fontsize=fs)
     f_df2_b = format_df(df2_b,x_min,x_max,df2_b.index)
     f_s_df2_b = format_df(s_df2_b,x_min,x_max,s_df2_b.index)
     
@@ -1598,7 +1665,7 @@ def save_image(path,results_deblend,dbl_im,image_params,truth,sep,
     gs = gridspec.GridSpec(7,9)                                   
     fig = plt.figure(figsize=(15,25))
     sh = 0.8
-    plt.suptitle('  True Objects, Deblended Objects & Fits to Deblended Objects\n For Separation: '+ str(sep) + '\"',fontsize=45)
+    plt.suptitle('  True Objects, Deblended Objects & Fits to Deblended Objects\n For Separation: '+ str(sep) + '\"',fontsize=30)
     
     # Plot the true blend
     ax = fig.add_subplot(gs[0,1:7])

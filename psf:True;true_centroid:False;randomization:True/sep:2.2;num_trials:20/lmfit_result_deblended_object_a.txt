@@ -1,0 +1,301 @@
+Trial 0
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.10212476 +/- 0        (-0.00%) (init=-1.102125)
+    y0:    -0.08423101 +/- 0        (-0.00%) (init=-0.08423102)
+[[Correlations]] (unreported correlations are <  0.100)Trial 1
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.19355712 +/- 0        (-0.00%) (init=-1.193557)
+    y0:    -0.00046889 +/- 0        (-0.00%) (init=-0.000468893)
+[[Correlations]] (unreported correlations are <  0.100)Trial 2
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.12663465 +/- 0        (-0.00%) (init=-1.126635)
+    y0:    -0.06212567 +/- 0        (-0.00%) (init=-0.06212568)
+[[Correlations]] (unreported correlations are <  0.100)Trial 3
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.10825803 +/- 0        (-0.00%) (init=-1.108258)
+    y0:     0.09931080 +/- 0        (0.00%) (init= 0.0993108)
+[[Correlations]] (unreported correlations are <  0.100)Trial 4
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.00344541 +/- 0        (-0.00%) (init=-1.003445)
+    y0:    -0.00850391 +/- 0        (-0.00%) (init=-0.008503919)
+[[Correlations]] (unreported correlations are <  0.100)Trial 5
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.19308218 +/- 0        (-0.00%) (init=-1.193082)
+    y0:     0.03227347 +/- 0        (0.00%) (init= 0.03227347)
+[[Correlations]] (unreported correlations are <  0.100)Trial 6
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.13224645 +/- 0        (-0.00%) (init=-1.132246)
+    y0:     0.00697668 +/- 0        (0.00%) (init= 0.00697668)
+[[Correlations]] (unreported correlations are <  0.100)Trial 7
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.21088584 +/- 0        (-0.00%) (init=-1.210886)
+    y0:    -0.04126009 +/- 0        (-0.00%) (init=-0.04126009)
+[[Correlations]] (unreported correlations are <  0.100)Trial 8
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.05371908 +/- 0        (-0.00%) (init=-1.053719)
+    y0:    -0.08787068 +/- 0        (-0.00%) (init=-0.08787069)
+[[Correlations]] (unreported correlations are <  0.100)Trial 9
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.09077364 +/- 0        (-0.00%) (init=-1.090774)
+    y0:     0.04950986 +/- 0        (0.00%) (init= 0.04950986)
+[[Correlations]] (unreported correlations are <  0.100)Trial 10
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.07764609 +/- 0        (-0.00%) (init=-1.077646)
+    y0:     0.06429798 +/- 0        (0.00%) (init= 0.06429798)
+[[Correlations]] (unreported correlations are <  0.100)Trial 11
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.01816427 +/- 0        (-0.00%) (init=-1.018164)
+    y0:    -0.06297803 +/- 0        (-0.00%) (init=-0.06297804)
+[[Correlations]] (unreported correlations are <  0.100)Trial 12
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.18015994 +/- 0        (-0.00%) (init=-1.18016)
+    y0:    -0.09387165 +/- 0        (-0.00%) (init=-0.09387166)
+[[Correlations]] (unreported correlations are <  0.100)Trial 13
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.13298816 +/- 0        (-0.00%) (init=-1.132988)
+    y0:     0.02567717 +/- 0        (0.00%) (init= 0.02567718)
+[[Correlations]] (unreported correlations are <  0.100)Trial 14
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.08992819 +/- 0        (-0.00%) (init=-1.089928)
+    y0:    -0.03430322 +/- 0        (-0.00%) (init=-0.03430322)
+[[Correlations]] (unreported correlations are <  0.100)Trial 15
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.18454271 +/- 0        (-0.00%) (init=-1.184543)
+    y0:    -0.00203621 +/- 0        (-0.00%) (init=-0.00203622)
+[[Correlations]] (unreported correlations are <  0.100)Trial 16
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.15596775 +/- 0        (-0.00%) (init=-1.155968)
+    y0:    -0.07422961 +/- 0        (-0.00%) (init=-0.07422962)
+[[Correlations]] (unreported correlations are <  0.100)Trial 17
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.12671291 +/- 0        (-0.00%) (init=-1.126713)
+    y0:     0.07317657 +/- 0        (0.00%) (init= 0.07317657)
+[[Correlations]] (unreported correlations are <  0.100)Trial 18
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -0.95872432 +/- 0        (-0.00%) (init=-0.9587243)
+    y0:     0.09210039 +/- 0        (0.00%) (init= 0.09210039)
+[[Correlations]] (unreported correlations are <  0.100)Trial 19
+
+[[Fit Statistics]]
+    # function evals   = 7
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = nan
+    reduced chi-square = nan
+[[Variables]]
+    flux:   25000      +/- 0        (0.00%) (init= 25000)
+    hlr:    1          +/- 0        (0.00%) (init= 1)
+    e1:     0          +/- 0        (nan%) (init= 0)
+    e2:     0          +/- 0        (nan%) (init= 0)
+    x0:    -1.10542619 +/- 0        (-0.00%) (init=-1.105426)
+    y0:     0.00380781 +/- 0        (0.00%) (init= 0.003807819)
+[[Correlations]] (unreported correlations are <  0.100)

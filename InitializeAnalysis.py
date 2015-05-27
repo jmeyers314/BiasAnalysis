@@ -65,7 +65,7 @@ def run_bias_over_separation(directory,
     image_params = [pixel_scale,x_len,y_len]
     
     # Parameters for object a
-    flux_a = 250000 # counts
+    flux_a = 25000 # counts
     hlr_a = 1  # arcsec
     e1_a = 0.0 
     e2_a = 0.0
@@ -75,7 +75,7 @@ def run_bias_over_separation(directory,
     obj_a = [flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a]
     
     # Parameters for object b
-    flux_b = 250000 # counts
+    flux_b = 25000 # counts
     hlr_b = hlr_a # arcsec
     e1_b = 0.0
     e2_b = 0.0
@@ -85,15 +85,15 @@ def run_bias_over_separation(directory,
     obj_b = [flux_b,hlr_b,e1_b,e2_b,x0_b,y0_b,n_b]
     
     # Sampling method
-    method = 'fft'
+    method = 'phot'
     
     # Use LSST defined sky noise for r-band
     add_noise_flag = True
     texp = 6900 # seconds;
     sbar = 26.8 # sky photons per second per pixel
-    sky_level = 0 # For sky noiseless images 
+    sky_level = 15 # For sky noiseless images 
     if sky_level == 0:
-        texp = 0 # To avoid a seg fault, ensure texp = 0 if sky level is 0
+        texp = 0 # To avoid a seg fault, ensure texp == 0 if sky level is 0
     sky_info = [add_noise_flag,texp,sbar,sky_level]
     
     # psf properties
@@ -103,14 +103,17 @@ def run_bias_over_separation(directory,
     psf_info = [psf_flag,beta,fwhm_psf]
     
     # Separations to run through, along the axis specified
-    separation = [2.4,2.2,2.0,1.8,1.6,1.4]
+    if psf:
+        separation = [2.4,2.2,2.0,1.8,1.6,1.4]
+    else:
+        separation = [2.4,2.2,2.0,1.8,1.6,1.4]
     x_sep = x_axis
     y_sep = y_axis
     left_diag = l_diag
     right_diag = r_diag
     
     # Number of trials to use for each separation
-    num_trials = 1000
+    num_trials = 20
     num_trial_arr = num_trials*np.ones(len(separation),dtype=np.int64)
     # Certain separations may present numerical instability, in which
     # it may be necessary to perform less trials.
@@ -177,140 +180,29 @@ def run_bias_over_separation(directory,
     min_offset = 1.3
     max_offset = 1.3
     bos.create_bias_plot(directory,separation,means_e,s_means_e,pixel_scale,
-                             fs,leg_fs,min_offset,max_offset,psf_flag,'e1,e2',
-                             False)
+                         fs,leg_fs,min_offset,max_offset,psf_flag,'e1,e2',
+                         False)
     bos.create_bias_plot(directory,separation,means_fl_hlr,s_means_fl_hlr,pixel_scale,
-                             fs,leg_fs,min_offset,max_offset,psf_flag,'flux,hlr',
-                             False)
+                         fs,leg_fs,min_offset,max_offset,psf_flag,'flux,hlr',
+                         False)
     bos.create_bias_plot(directory,separation,means_x0_y0,s_means_x0_y0,pixel_scale,
-                             fs,leg_fs,min_offset,max_offset,psf_flag,'x0,y0',
-                             False)
+                         fs,leg_fs,min_offset,max_offset,psf_flag,'x0,y0',
+                         False)
     bos.create_bias_plot(directory,separation,means_e,s_means_e,pixel_scale,
-                             fs,leg_fs,min_offset,max_offset,psf_flag,'e1,e2',
-                             True)
+                         fs,leg_fs,min_offset,max_offset,psf_flag,'e1,e2',
+                         True)
     bos.create_bias_plot(directory,separation,means_fl_hlr,s_means_fl_hlr,pixel_scale,
-                             fs,leg_fs,min_offset,max_offset,psf_flag,'flux,hlr',
-                             True)
+                         fs,leg_fs,min_offset,max_offset,psf_flag,'flux,hlr',
+                         True)
     bos.create_bias_plot(directory,separation,means_x0_y0,s_means_x0_y0,pixel_scale,
-                             fs,leg_fs,min_offset,max_offset,psf_flag,'x0,y0',
-                             True)
+                         fs,leg_fs,min_offset,max_offset,psf_flag,'x0,y0',
+                         True)
                                
 if __name__ == '__main__':
 
-    # Example usage:
-    # No PSF
-    psf = False
-    # Use the simultaneous fitter (x,y) estimates of each object for the deblender
-    est_centroid = True
-    # Randomize true (x,y)
-    random_pixel = True
-    # Run along the x axis
-    x_axis = True
-    y_axis = False
-    l_diag = False
-    r_diag = False
-    # Store information in current working directory
-    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
-    run_bias_over_separation(dir_str,
-                             psf,
-                             est_centroid,
-                             random_pixel,
-                             x_axis,y_axis,
-                             l_diag,r_diag)
-                             
-    psf = False
-    est_centroid = False
-    random_pixel = True
-    x_axis = True
-    y_axis = False
-    l_diag = False
-    r_diag = False
-    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
-    run_bias_over_separation(dir_str,
-                             psf,
-                             est_centroid,
-                             random_pixel,
-                             x_axis,y_axis,
-                             l_diag,r_diag)
-                             
-    psf = False
-    est_centroid = True
-    random_pixel = False
-    x_axis = True
-    y_axis = False
-    l_diag = False
-    r_diag = False
-    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
-    run_bias_over_separation(dir_str,
-                             psf,
-                             est_centroid,
-                             random_pixel,
-                             x_axis,y_axis,
-                             l_diag,r_diag)
-                             
-    psf = False
-    est_centroid = False
-    random_pixel = False
-    x_axis = True
-    y_axis = False
-    l_diag = False
-    r_diag = False
-    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
-    run_bias_over_separation(dir_str,
-                             psf,
-                             est_centroid,
-                             random_pixel,
-                             x_axis,y_axis,
-                             l_diag,r_diag)
-                             
     psf = True
     est_centroid = True
     random_pixel = True
-    x_axis = True
-    y_axis = False
-    l_diag = False
-    r_diag = False
-    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
-    run_bias_over_separation(dir_str,
-                             psf,
-                             est_centroid,
-                             random_pixel,
-                             x_axis,y_axis,
-                             l_diag,r_diag)
-                             
-    psf = True
-    est_centroid = False
-    random_pixel = True
-    x_axis = True
-    y_axis = False
-    l_diag = False
-    r_diag = False
-    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
-    run_bias_over_separation(dir_str,
-                             psf,
-                             est_centroid,
-                             random_pixel,
-                             x_axis,y_axis,
-                             l_diag,r_diag)
-                             
-    psf = True
-    est_centroid = True
-    random_pixel = False
-    x_axis = True
-    y_axis = False
-    l_diag = False
-    r_diag = False
-    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
-    run_bias_over_separation(dir_str,
-                             psf,
-                             est_centroid,
-                             random_pixel,
-                             x_axis,y_axis,
-                             l_diag,r_diag)
-                             
-    psf = True
-    est_centroid = False
-    random_pixel = False
     x_axis = True
     y_axis = False
     l_diag = False

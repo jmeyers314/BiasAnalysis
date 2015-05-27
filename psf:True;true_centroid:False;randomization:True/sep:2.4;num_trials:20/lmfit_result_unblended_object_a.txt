@@ -1,0 +1,321 @@
+Trial 0
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10342.655
+    reduced chi-square = 1.035
+[[Variables]]
+    flux:   25655.0712 +/- 193.8916 (0.76%) (init= 25000)
+    hlr:    0.99883082 +/- 0.006366 (0.64%) (init= 1)
+    e1:    -0.00152755 +/- 0.006096 (399.10%) (init= 0)
+    e2:    -0.00932102 +/- 0.006148 (65.97%) (init= 0)
+    x0:    -1.16061224 +/- 0.007830 (0.67%) (init=-1.163994)
+    y0:    -0.02078475 +/- 0.007867 (37.85%) (init=-0.001634537)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.297 Trial 1
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10231.098
+    reduced chi-square = 1.024
+[[Variables]]
+    flux:   25487.6903 +/- 193.1721 (0.76%) (init= 25000)
+    hlr:    1.01950501 +/- 0.006471 (0.63%) (init= 1)
+    e1:     0.00233254 +/- 0.006139 (263.21%) (init= 0)
+    e2:     0.00810780 +/- 0.006065 (74.82%) (init= 0)
+    x0:    -1.26466133 +/- 0.008009 (0.63%) (init=-1.268358)
+    y0:    -0.02431028 +/- 0.008000 (32.91%) (init=-0.03589407)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.302 Trial 2
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10489.377
+    reduced chi-square = 1.050
+[[Variables]]
+    flux:   25285.0163 +/- 195.0974 (0.77%) (init= 25000)
+    hlr:    1.02190171 +/- 0.006611 (0.65%) (init= 1)
+    e1:     0.01330631 +/- 0.006214 (46.70%) (init= 0)
+    e2:    -0.01118896 +/- 0.006206 (55.47%) (init= 0)
+    x0:    -1.09208869 +/- 0.008251 (0.76%) (init=-1.107065)
+    y0:     0.01743486 +/- 0.008077 (46.33%) (init= 0.01457144)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.302 Trial 3
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10084.868
+    reduced chi-square = 1.009
+[[Variables]]
+    flux:   25484.3093 +/- 191.4889 (0.75%) (init= 25000)
+    hlr:    1.01520525 +/- 0.006434 (0.63%) (init= 1)
+    e1:     0.00468347 +/- 0.006052 (129.24%) (init= 0)
+    e2:    -0.01681169 +/- 0.006078 (36.16%) (init= 0)
+    x0:    -1.27342385 +/- 0.007937 (0.62%) (init=-1.277103)
+    y0:     0.07972931 +/- 0.007868 (9.87%) (init= 0.07921737)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.301 Trial 4
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10298.521
+    reduced chi-square = 1.030
+[[Variables]]
+    flux:   25411.0508 +/- 193.3937 (0.76%) (init= 25000)
+    hlr:    1.01656878 +/- 0.006518 (0.64%) (init= 1)
+    e1:     0.01151995 +/- 0.006160 (53.48%) (init= 0)
+    e2:     0.00946253 +/- 0.006117 (64.65%) (init= 0)
+    x0:    -1.22732036 +/- 0.008089 (0.66%) (init=-1.229326)
+    y0:     0.03530828 +/- 0.007936 (22.48%) (init= 0.01679275)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.300 Trial 5
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10240.828
+    reduced chi-square = 1.025
+[[Variables]]
+    flux:   25598.1246 +/- 193.8124 (0.76%) (init= 25000)
+    hlr:    1.02579934 +/- 0.006505 (0.63%) (init= 1)
+    e1:    -0.00797280 +/- 0.006101 (76.52%) (init= 0)
+    e2:     0.01001765 +/- 0.006075 (60.65%) (init= 0)
+    x0:    -1.13093665 +/- 0.007987 (0.71%) (init=-1.136618)
+    y0:    -0.04750710 +/- 0.008082 (17.01%) (init=-0.05144788)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.303 Trial 6
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10151.139
+    reduced chi-square = 1.016
+[[Variables]]
+    flux:   25680.3660 +/- 192.9509 (0.75%) (init= 25000)
+    hlr:    1.02384852 +/- 0.006459 (0.63%) (init= 1)
+    e1:     0.00748972 +/- 0.006017 (80.35%) (init= 0)
+    e2:    -0.00283162 +/- 0.006069 (214.36%) (init= 0)
+    x0:    -1.23618987 +/- 0.008008 (0.65%) (init=-1.234644)
+    y0:    -0.06998237 +/- 0.007904 (11.29%) (init=-0.06197664)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.300 Trial 7
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10263.814
+    reduced chi-square = 1.027
+[[Variables]]
+    flux:   25697.8663 +/- 193.3613 (0.75%) (init= 25000)
+    hlr:    1.00363444 +/- 0.006377 (0.64%) (init= 1)
+    e1:    -0.01283798 +/- 0.006085 (47.40%) (init= 0)
+    e2:     0.01406655 +/- 0.006088 (43.28%) (init= 0)
+    x0:    -1.25353904 +/- 0.007764 (0.62%) (init=-1.267127)
+    y0:    -0.00262478 +/- 0.007917 (301.66%) (init=-0.01413147)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.297 Trial 8
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10575.860
+    reduced chi-square = 1.058
+[[Variables]]
+    flux:   25372.4633 +/- 195.8234 (0.77%) (init= 25000)
+    hlr:    1.01170913 +/- 0.006565 (0.65%) (init= 1)
+    e1:    -0.00895177 +/- 0.006203 (69.30%) (init= 0)
+    e2:     0.00781887 +/- 0.006260 (80.07%) (init= 0)
+    x0:    -1.12577381 +/- 0.008037 (0.71%) (init=-1.134101)
+    y0:     0.06989069 +/- 0.008160 (11.68%) (init= 0.08398387)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.301 Trial 9
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10551.853
+    reduced chi-square = 1.056
+[[Variables]]
+    flux:   25448.7250 +/- 195.5474 (0.77%) (init= 25000)
+    hlr:    1.00757340 +/- 0.006520 (0.65%) (init= 1)
+    e1:    -0.00204932 +/- 0.006219 (303.50%) (init= 0)
+    e2:    -0.00049429 +/- 0.006210 (1256.39%) (init= 0)
+    x0:    -1.20775845 +/- 0.008018 (0.66%) (init=-1.201354)
+    y0:    -0.07836170 +/- 0.008049 (10.27%) (init=-0.09320631)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.299 Trial 10
+
+[[Fit Statistics]]
+    # function evals   = 29
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 9843.397
+    reduced chi-square = 0.985
+[[Variables]]
+    flux:   25048.2977 +/- 187.9725 (0.75%) (init= 25000)
+    hlr:    1.01311777 +/- 0.006387 (0.63%) (init= 1)
+    e1:    -0.01066840 +/- 0.006078 (56.98%) (init= 0)
+    e2:     0.00792584 +/- 0.006038 (76.19%) (init= 0)
+    x0:    -1.23515816 +/- 0.007814 (0.63%) (init=-1.230983)
+    y0:    -0.07856057 +/- 0.007959 (10.13%) (init=-0.07803539)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.302 Trial 11
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10452.403
+    reduced chi-square = 1.046
+[[Variables]]
+    flux:   25224.5237 +/- 194.1216 (0.77%) (init= 25000)
+    hlr:    1.01441743 +/- 0.006587 (0.65%) (init= 1)
+    e1:     0.00248147 +/- 0.006229 (251.04%) (init= 0)
+    e2:     0.00849532 +/- 0.006196 (72.94%) (init= 0)
+    x0:    -1.30879228 +/- 0.008107 (0.62%) (init=-1.284435)
+    y0:    -0.05412825 +/- 0.008064 (14.90%) (init=-0.03453186)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.300 Trial 12
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10256.780
+    reduced chi-square = 1.026
+[[Variables]]
+    flux:   25225.9569 +/- 191.9938 (0.76%) (init= 25000)
+    hlr:    1.00536955 +/- 0.006467 (0.64%) (init= 1)
+    e1:    -0.00697378 +/- 0.006151 (88.21%) (init= 0)
+    e2:    -0.00353794 +/- 0.006170 (174.41%) (init= 0)
+    x0:    -1.29123636 +/- 0.007900 (0.61%) (init=-1.285954)
+    y0:    -0.03894511 +/- 0.007981 (20.49%) (init=-0.04425672)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.299 Trial 13
+
+[[Fit Statistics]]
+    # function evals   = 29
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10459.850
+    reduced chi-square = 1.047
+[[Variables]]
+    flux:   25545.7461 +/- 195.3626 (0.76%) (init= 25000)
+    hlr:    1.01763096 +/- 0.006572 (0.65%) (init= 1)
+    e1:     0.00041289 +/- 0.006157 (1491.26%) (init= 0)
+    e2:     0.01599723 +/- 0.006185 (38.67%) (init= 0)
+    x0:    -1.16795026 +/- 0.008075 (0.69%) (init=-1.15486)
+    y0:     0.11108097 +/- 0.008037 (7.24%) (init= 0.09668417)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.300 Trial 14
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10358.721
+    reduced chi-square = 1.036
+[[Variables]]
+    flux:   25508.3950 +/- 193.9633 (0.76%) (init= 25000)
+    hlr:    1.00795835 +/- 0.006459 (0.64%) (init= 1)
+    e1:    -0.00253023 +/- 0.006141 (242.73%) (init= 0)
+    e2:    -0.00338381 +/- 0.006153 (181.85%) (init= 0)
+    x0:    -1.31946337 +/- 0.007929 (0.60%) (init=-1.285271)
+    y0:     0.10159674 +/- 0.007974 (7.85%) (init= 0.09597662)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.299 Trial 15
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10303.039
+    reduced chi-square = 1.031
+[[Variables]]
+    flux:   25453.7534 +/- 193.9695 (0.76%) (init= 25000)
+    hlr:    1.02704996 +/- 0.006571 (0.64%) (init= 1)
+    e1:     0.00177600 +/- 0.006124 (344.84%) (init= 0)
+    e2:    -0.00137298 +/- 0.006137 (447.02%) (init= 0)
+    x0:    -1.25785664 +/- 0.008101 (0.64%) (init=-1.248666)
+    y0:     0.09464690 +/- 0.008079 (8.54%) (init= 0.07852548)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.303 Trial 16
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10601.615
+    reduced chi-square = 1.061
+[[Variables]]
+    flux:   25334.1671 +/- 195.9908 (0.77%) (init= 25000)
+    hlr:    1.01455793 +/- 0.006617 (0.65%) (init= 1)
+    e1:     0.00639389 +/- 0.006253 (97.80%) (init= 0)
+    e2:    -0.00774745 +/- 0.006243 (80.58%) (init= 0)
+    x0:    -1.28825772 +/- 0.008162 (0.63%) (init=-1.28547)
+    y0:     0.08805019 +/- 0.008103 (9.20%) (init= 0.09844245)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.302 Trial 17
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10707.492
+    reduced chi-square = 1.071
+[[Variables]]
+    flux:   25848.2112 +/- 198.8651 (0.77%) (init= 25000)
+    hlr:    1.02244411 +/- 0.006600 (0.65%) (init= 1)
+    e1:     0.00345314 +/- 0.006222 (180.19%) (init= 0)
+    e2:    -0.00138301 +/- 0.006165 (445.84%) (init= 0)
+    x0:    -1.15575115 +/- 0.008154 (0.71%) (init=-1.156956)
+    y0:     0.02241178 +/- 0.008126 (36.26%) (init= 0.01297534)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.302 Trial 18
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10495.756
+    reduced chi-square = 1.050
+[[Variables]]
+    flux:   24959.6276 +/- 193.4588 (0.78%) (init= 25000)
+    hlr:    0.99942403 +/- 0.006525 (0.65%) (init= 1)
+    e1:     0.00554580 +/- 0.006296 (113.53%) (init= 0)
+    e2:     0.00367212 +/- 0.006272 (170.82%) (init= 0)
+    x0:    -1.16819721 +/- 0.008081 (0.69%) (init=-1.163908)
+    y0:    -0.09143613 +/- 0.008032 (8.79%) (init=-0.09945441)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.301 Trial 19
+
+[[Fit Statistics]]
+    # function evals   = 22
+    # data points      = 10000
+    # variables        = 6
+    chi-square         = 10220.180
+    reduced chi-square = 1.023
+[[Variables]]
+    flux:   25619.3466 +/- 192.9509 (0.75%) (init= 25000)
+    hlr:    1.00885934 +/- 0.006402 (0.63%) (init= 1)
+    e1:     0.00022758 +/- 0.006066 (2665.59%) (init= 0)
+    e2:     0.01347767 +/- 0.006103 (45.29%) (init= 0)
+    x0:    -1.11005559 +/- 0.007874 (0.71%) (init=-1.109528)
+    y0:     0.10775016 +/- 0.007889 (7.32%) (init= 0.08977294)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(flux, hlr)                 =  0.299 
