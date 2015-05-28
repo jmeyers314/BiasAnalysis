@@ -459,7 +459,7 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
 
 
     # Extract params that minimize the difference of the data from the model.
-    ipdb.set_trace()
+
     result_a = lmfit.minimize(residual_1_obj, parameters_a, args=(children[0], sky_level, x_len, y_len, pixel_scale, sersic_func, n_a,
                                                                   psf_flag, beta, fwhm_psf))
 
@@ -467,7 +467,7 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
         a.write('Trial ' + str(run) + '\n\n')
         a.write(lmfit.fit_report(result_a))
     if not result_a.success:
-        failures['deblended_a'].append(i)
+        failures['deblended_a'].append(run)
 
     result_b = lmfit.minimize(residual_1_obj, parameters_b, args=(children[1], sky_level, x_len, y_len, pixel_scale, sersic_func, n_a,
                                                                   psf_flag, beta, fwhm_psf))
@@ -476,7 +476,7 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
         b.write('Trial ' + str(run) + '\n\n')
         b.write(lmfit.fit_report(result_b))
     if not result_b.success:
-        failures['deblended_b'].append(i)
+        failures['deblended_b'].append(run)
 
     # Plot the data if necessary
     if plot != False:
@@ -556,7 +556,7 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
         c.write('Trial ' + str(run) + '\n\n')
         c.write(lmfit.fit_report(result_a_true))
     if not result_a_true.success:
-        failures['unblended_a'].append(i)
+        failures['unblended_a'].append(run)
 
     result_b_true = lmfit.minimize(residual_1_obj, parameters_b, args=(image_b_t.array, sky_level, x_len, y_len, pixel_scale, sersic_func, n_b,
                                                                        psf_flag, beta, fwhm_psf))
@@ -565,7 +565,7 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
         d.write('Trial ' + str(run) + '\n\n')
         d.write(lmfit.fit_report(result_b_true))
     if not result_b_true.success:
-        failures['unblended_b'].append(i)
+        failures['unblended_b'].append(run)
                                                                        
     # Store the results
     results_true = pd.Series(np.array([result_a_true.params['flux'].value,
