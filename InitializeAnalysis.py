@@ -91,7 +91,7 @@ def run_bias_over_separation(directory,
     add_noise_flag = True
     texp = 6900 # seconds;
     sbar = 26.8 # sky photons per second per pixel
-    sky_level = 15 # For sky noiseless images 
+    sky_level = 0 # For sky noiseless images 
     if sky_level == 0:
         texp = 0 # To avoid a seg fault, ensure texp == 0 if sky level is 0
     sky_info = [add_noise_flag,texp,sbar,sky_level]

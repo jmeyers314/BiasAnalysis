@@ -18,6 +18,7 @@ import os
 import triangle
 import seaborn as sb
 import csv
+import ipdb
 
 # Function Definitions --------------------------------------------------------
 
@@ -426,6 +427,9 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
 
     templates, template_fractions, children = deblend.deblend(image_noise.array, peaks_pix)
 
+    if np.any(children[0]==np.nan) or np.any(children[1]==np.nan):
+        ipdb.set_trace()
+
     # Now we can run the fitter to estimate the parameters of the children
     # -----------------------------------------------------------------------
     # Estimate the parameters of the image.
@@ -455,6 +459,7 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
 
 
     # Extract params that minimize the difference of the data from the model.
+    ipdb.set_trace()
     result_a = lmfit.minimize(residual_1_obj, parameters_a, args=(children[0], sky_level, x_len, y_len, pixel_scale, sersic_func, n_a,
                                                                   psf_flag, beta, fwhm_psf))
 
