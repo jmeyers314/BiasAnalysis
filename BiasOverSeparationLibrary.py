@@ -26,7 +26,7 @@ import ipdb
 def create_galaxy(flux, hlr, e1, e2, x0, y0, galtype_gal=galsim.Sersic, sersic_index=0.5,
                   psf_flag=False, psf_type=galsim.Moffat, beta=3, size_psf=1, flux_psf=1,
                   x_len=100, y_len=100, scale=0.2, method='fft', seed=None,
-                  verbose=False, max_fft_size=100000, return_obj=False):
+                  verbose=False, max_fft_size=10000, return_obj=False):
                       
     """ Helper function to create galsim objects
     
@@ -380,8 +380,7 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
     method -- method in which to generate objects
     path -- directory in which to store lmfit report
     run -- current run number
-    factor_init -- scalar to multiply initial guesspath
-    
+    factor_init -- scalar to multiply initial guesspath    
     plot -- boolean indicating whether to show plots actively (Default False)
 
     Returns:
