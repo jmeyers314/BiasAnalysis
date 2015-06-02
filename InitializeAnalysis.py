@@ -85,7 +85,7 @@ def run_bias_over_separation(directory,
     obj_b = [flux_b,hlr_b,e1_b,e2_b,x0_b,y0_b,n_b]
     
     # Sampling method
-    method = 'phot'
+    method = 'fft'
     
     # Use LSST defined sky noise for r-band
     add_noise_flag = True

@@ -18,7 +18,7 @@ import os
 import triangle
 import seaborn as sb
 import csv
-import ipdb
+import shutil
 
 # Function Definitions --------------------------------------------------------
 
@@ -63,12 +63,12 @@ def create_galaxy(flux, hlr, e1, e2, x0, y0, galtype_gal=galsim.Sersic, sersic_i
                   
     big_fft_params = galsim.GSParams(maximum_fft_size=max_fft_size)
     
-    if verbose == True:
+    if verbose:
         print "\nPostage Stamp is", x_len, "by", y_len, "with\na scale of", scale,"\"/Pixel"    
         
     if galtype_gal is galsim.Sersic:
         assert sersic_index != 0
-        if verbose == True:        
+        if verbose:        
             if sersic_index == 0.5:
                 print "\nThe object drawn is a gaussian with n = 0.5" 
         # Apply shearing and shifting of image
@@ -79,7 +79,7 @@ def create_galaxy(flux, hlr, e1, e2, x0, y0, galtype_gal=galsim.Sersic, sersic_i
             return gal
         image = galsim.ImageD(x_len, y_len, scale=scale)
         # Convolve with PSF
-        if psf_flag == True:
+        if psf_flag:
             psf_gal = convolve_with_psf(gal, beta=beta, size_psf=size_psf, psf_type=psf_type, flux_psf=flux_psf,
                                         verbose=verbose, max_fft_size=max_fft_size)
             if method == 'fft':
@@ -101,7 +101,7 @@ def convolve_with_psf(gal, beta, size_psf, psf_type=galsim.Moffat, flux_psf=1,
                       verbose=False, max_fft_size=100000):
     """ Helper function to convolve objects with Moffat PSF"""
     big_fft_params = galsim.GSParams(maximum_fft_size=max_fft_size)
-    if verbose == True:
+    if verbose:
         print "Using a psf with beta =", beta,"and size = ", size_psf," \"" 
     psf = psf_type(beta=beta, fwhm=size_psf, flux=flux_psf, gsparams=big_fft_params)
     psf_gal = galsim.Convolve([gal,psf])
@@ -274,7 +274,7 @@ def run_2_galaxy_full_params_simple(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
     
     """
 
-    # Create target iages and sum
+    # Create target images and sum
     image_a = create_galaxy(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,galtype_gal=galtype_a,sersic_index=n_a,
                             x_len=x_len,y_len=y_len,scale=pixel_scale,
                             psf_flag=psf_flag, beta=beta, size_psf=fwhm_psf,
@@ -288,7 +288,7 @@ def run_2_galaxy_full_params_simple(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
     # Add noise to image
     image_no_noise = image_a + image_b                        
     image = image_a + image_b
-    if add_noise_flag == True:
+    if add_noise_flag:
         image_noise = add_noise(image,seed=seed_p,sky_level=sky_level)
         image = image_noise
     else:
@@ -324,14 +324,6 @@ def run_2_galaxy_full_params_simple(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
                                                                     psf_flag, beta, fwhm_psf))                                   
                                                                       
     return image_no_noise, image_noise, result
-
-# Convert python file to ipython notebook document format.    
-def to_ipynb(infile,outfile):
-    # infile; input python file <foo.py>
-    # outfile; output python file <foo.ipynb>
-    import IPython.nbformat.current as nbf
-    nb = nbf.read(open(infile, 'r'), 'py')
-    nbf.write(nb, open(outfile, 'w'), 'ipynb')    
 
 # Create a blend, deblend, then estimate ellipticity of deblended objects and true objects.
 def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
@@ -421,13 +413,13 @@ def deblend_estimate(flux_a,hlr_a,e1_a,e2_a,x0_a,y0_a,n_a,
     # Deblend the resulting blend
     peak1 = (x0_a,y0_a)
     peak2 = (x0_b,y0_b)
-    peaks_pix = [[p1/0.2 for p1 in peak1],
-                 [p2/0.2 for p2 in peak2]]
+    peaks_pix = [[p1/pixel_scale for p1 in peak1],
+                 [p2/pixel_scale for p2 in peak2]]
 
     templates, template_fractions, children = deblend.deblend(image_noise.array, peaks_pix)
 
-    if np.any(children[0]==np.nan) or np.any(children[1]==np.nan):
-        ipdb.set_trace()
+    if np.isnan(np.any(children[0])) or np.isnan(np.any(children[1])):
+        raise ValueError("NaN's in deblended images.")
 
     # Now we can run the fitter to estimate the parameters of the children
     # -----------------------------------------------------------------------
@@ -1181,9 +1173,9 @@ def join_info(directory,
     else:
         print "Not convolving objects with PSF\n"
     if use_est_centroid:
-        print "Not using prior on (x,y) for both objects\n"
+        print "Using simultaneous fitting output estimates of (x,y) for deblender\n"
     else:
-        print "Using prior on (x,y) for both objects\n"
+        print "Using true (x,y) for deblender\n"
     if randomize:
         print "Randomizing centroids a pixel about median separation\n"
     else:
@@ -1191,7 +1183,9 @@ def join_info(directory,
     if create_tri_plots:
         print "Creating triangle plots\n"
     else:
-        print "Not creating triangle plots\n"        
+        print "Not creating triangle plots\n"
+
+    print "Using " + method + " for sampling\n"
         
         
     sub_dir = ('x_y_prior = ' + str(not use_est_centroid) + '\n' +
@@ -1212,7 +1206,11 @@ def join_info(directory,
     
 def create_read_me(info_str,dir_str):
     """ Create Run_Information.txt file storing Information of Run """
-    os.mkdir(dir_str)
+    try:
+        os.mkdir(dir_str)
+    except:
+        shutil.rmtree(dir_str)
+        os.mkdir(dir_str)
     file = open(dir_str + '/Run_Information.txt','w+')
     file.write(info_str)
     file.close()
@@ -1240,7 +1238,8 @@ def create_triangle_plots(path,sep,num_trials,
     truth -- truth values of parameters
     x_y_coord -- randomized x,y coordinates of objects a and b
     randomize -- boolean indicating centroid randomization
-    identifier -- string indicating raw or residual data. 
+    identifier -- string indicating raw or residual data.
+    
     """
     
     # Use the same scaling for all three methods
@@ -1464,7 +1463,11 @@ def create_bias_plot(path,separation,means,s_means,pixel_scale,
                   prop={'size':leg_fs}, shadow=True, ncol=3, fancybox=True)
     
 
-    print "\nSaving bias vs separation plots.\n"   
+    # Print to terminal
+    if not zoom:
+        print '\nSaving Bias vs separation plot for ' + identifier +  '.\n'
+    else:
+        print '\nSaving Zoomed Bias vs separation plot for ' + identifier +  '.\n'
     
     # Access appropriate information according to identifier
     if identifier == 'e1,e2':
@@ -1673,43 +1676,43 @@ def save_image(path,results_deblend,dbl_im,image_params,truth,sep,
     
     # Plot the true blend
     ax = fig.add_subplot(gs[0,1:7])
-    z = ax.imshow(true_im_a.array + true_im_b.array,interpolation='none',origin='lower'); plt.title('True Blend'); plt.colorbar(z,shrink=sh)
+    z = ax.imshow(true_im_a.array + true_im_b.array,interpolation='none',origin='lower',cmap='jet'); plt.title('True Blend'); plt.colorbar(z,shrink=sh)
     
     # Plot the true objects
     ax1 = fig.add_subplot(gs[1,0:4])
-    a = ax1.imshow(true_im_a.array,interpolation='none',origin='lower'); plt.title('True Object A'); plt.colorbar(a,shrink=sh)
+    a = ax1.imshow(true_im_a.array,interpolation='none',origin='lower',cmap='jet'); plt.title('True Object A'); plt.colorbar(a,shrink=sh)
     ax2 = fig.add_subplot(gs[1,6:10])
-    b = ax2.imshow(true_im_b.array,interpolation='none',origin='lower'); plt.title('True Object B'); plt.colorbar(b,shrink=sh)
+    b = ax2.imshow(true_im_b.array,interpolation='none',origin='lower',cmap='jet'); plt.title('True Object B'); plt.colorbar(b,shrink=sh)
     
     # Plot the deblended objects
     ax3 = fig.add_subplot(gs[2,0:4])
-    c = ax3.imshow(dbl_obj_im_a,interpolation='none',origin='lower'); plt.title('Deblended Object A'); plt.colorbar(c,shrink=sh)
+    c = ax3.imshow(dbl_obj_im_a,interpolation='none',origin='lower',cmap='jet'); plt.title('Deblended Object A'); plt.colorbar(c,shrink=sh)
     ax4 = fig.add_subplot(gs[2,6:10])
-    d = ax4.imshow(dbl_obj_im_b,interpolation='none',origin='lower'); plt.title('Deblended Object B'); plt.colorbar(d,shrink=sh)
+    d = ax4.imshow(dbl_obj_im_b,interpolation='none',origin='lower',cmap='jet'); plt.title('Deblended Object B'); plt.colorbar(d,shrink=sh)
     
     # Plot the residual of the deblended and the true individual objects
     ax5 = fig.add_subplot(gs[3,0:4])
-    e = ax5.imshow(dbl_obj_im_a-true_im_a.array,interpolation='none',origin='lower'); plt.title('Residual of Deblended A and True A'); plt.colorbar(e,shrink=sh)
+    e = ax5.imshow(dbl_obj_im_a-true_im_a.array,interpolation='none',origin='lower',cmap='jet'); plt.title('Residual of Deblended A and True A'); plt.colorbar(e,shrink=sh)
     ax6 = fig.add_subplot(gs[3,6:10])
-    f = ax6.imshow(dbl_obj_im_b-true_im_b.array,interpolation='none',origin='lower'); plt.title('Residual of Deblended B and True B'); plt.colorbar(f,shrink=sh)
+    f = ax6.imshow(dbl_obj_im_b-true_im_b.array,interpolation='none',origin='lower',cmap='jet'); plt.title('Residual of Deblended B and True B'); plt.colorbar(f,shrink=sh)
     
     # Plot the fits to the deblended objects
     ax7 = fig.add_subplot(gs[4,0:4])
-    g = ax7.imshow(fit_dbl_a.array,interpolation='none',origin='lower'); plt.title('Fit To Deblended Object A'); plt.colorbar(g,shrink=sh)
+    g = ax7.imshow(fit_dbl_a.array,interpolation='none',origin='lower',cmap='jet'); plt.title('Fit To Deblended Object A'); plt.colorbar(g,shrink=sh)
     ax8 = fig.add_subplot(gs[4,6:10])
-    h = ax8.imshow(fit_dbl_b.array,interpolation='none',origin='lower'); plt.title('Fit To Deblended Object B'); plt.colorbar(h,shrink=sh)
+    h = ax8.imshow(fit_dbl_b.array,interpolation='none',origin='lower',cmap='jet'); plt.title('Fit To Deblended Object B'); plt.colorbar(h,shrink=sh)
     
     # Plot the residual of the fit to the deblended to the deblended objects
     ax9 = fig.add_subplot(gs[5,0:4])
-    i = ax9.imshow(fit_dbl_a.array-dbl_obj_im_a,interpolation='none',origin='lower'); plt.title('Residual Of Fit To Deblended Object A and Deblended A'); plt.colorbar(i,shrink=sh)
+    i = ax9.imshow(fit_dbl_a.array-dbl_obj_im_a,interpolation='none',origin='lower',cmap='jet'); plt.title('Residual Of Fit To Deblended Object A and Deblended A'); plt.colorbar(i,shrink=sh)
     ax10 = fig.add_subplot(gs[5,6:10])
-    j = ax10.imshow(fit_dbl_b.array-dbl_obj_im_b,interpolation='none',origin='lower'); plt.title('Residual Of Fit To Deblended Object B and Deblended B'); plt.colorbar(j,shrink=sh)
+    j = ax10.imshow(fit_dbl_b.array-dbl_obj_im_b,interpolation='none',origin='lower',cmap='jet'); plt.title('Residual Of Fit To Deblended Object B and Deblended B'); plt.colorbar(j,shrink=sh)
     
     # Plot the residual of the fit to the deblended to the true unblended object
     ax11 = fig.add_subplot(gs[6,0:4])
-    k = ax11.imshow(fit_dbl_a.array-true_im_a.array,interpolation='none',origin='lower'); plt.title('Residual Of Fit To Deblended Object A and True Object A'); plt.colorbar(k,shrink=sh)
+    k = ax11.imshow(fit_dbl_a.array-true_im_a.array,interpolation='none',origin='lower',cmap='jet'); plt.title('Residual Of Fit To Deblended Object A and True Object A'); plt.colorbar(k,shrink=sh)
     ax12 = fig.add_subplot(gs[6,6:10])
-    l = ax12.imshow(fit_dbl_b.array-true_im_b.array,interpolation='none',origin='lower'); plt.title('Residual Of Fit To Deblended Object B and True Object B'); plt.colorbar(l,shrink=sh)
+    l = ax12.imshow(fit_dbl_b.array-true_im_b.array,interpolation='none',origin='lower',cmap='jet'); plt.title('Residual Of Fit To Deblended Object B and True Object B'); plt.colorbar(l,shrink=sh)
 
     plt.savefig(path + '/image_of_one_trial.png')
     plt.clf()
