@@ -19,4 +19,5 @@ Set of functions for running the deblender, simultaneous fitter
 and fits to true objects to compare results and perform
 bias analysis over a specific set of separations.
 
-
+# deblender.py
+Module containing the approximate LSST symmetrization deblender.
