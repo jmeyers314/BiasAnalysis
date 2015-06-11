@@ -199,18 +199,31 @@ def run_bias_over_separation(directory,
                          True)
                                
 if __name__ == '__main__':
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument('--no_psf', action='store_true', 
+                        help="Do not convolve images by a PSF.")
+    parser.add_argument('--fit_deblend_centroid', action='store_true', 
+                        help="Use simultaneous fit results as input to deblender.")
+    parser.add_argument('--random_centroids', action='store_true', 
+                        help="Randomize centroids of blended objects (+/- 1 pixel)")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--xsep', action='store_true', 
+                       help="Make separation along x-axis.")
+    group.add_argument('--ysep', action='store_true', 
+                       help="Make separation along y-axis.")
+    group.add_argument('--rsep', action='store_true', 
+                       help="Make separation along x=y direction.")
+    group.add_argument('--lsep', action='store_true', 
+                       help="Make separation along x=-y direction.")
+    args = parser.parse_args()
 
-    psf = True
-    est_centroid = True
-    random_pixel = True
-    x_axis = True
-    y_axis = False
-    l_diag = False
-    r_diag = False
-    dir_str = 'psf:' + str(psf) + ';true_centroid:' + str(not est_centroid) + ';randomization:' + str(random_pixel)
+    dir_str = ('psf:' + str(not args.no_psf) 
+               + ';fit_centroid:' + str(args.fit_deblend_centroid) 
+               + ';randomization:' + str(args.random_centroids))
     run_bias_over_separation(dir_str,
-                             psf,
-                             est_centroid,
-                             random_pixel,
-                             x_axis,y_axis,
-                             l_diag,r_diag)
+                             not args.no_psf,
+                             args.fit_deblend_centroid, 
+                             args.random_centroids,
+                             args.xsep, args.ysep, 
+                             args.lsep, args.rsep)
